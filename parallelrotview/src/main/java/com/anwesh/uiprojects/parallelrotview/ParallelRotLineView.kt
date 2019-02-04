@@ -42,13 +42,13 @@ fun Canvas.drawPRLNode(i : Int, scale : Float, paint : Paint) {
     translate(w / 2, gap * (i + 1))
     for (j in 0..(lines - 1)) {
         val scj : Float = sc1.divideScale(j, lines)
+        val sck : Float = sc2.divideScale(j, lines)
         save()
         rotate(180f * j)
         translate(-size, size * scj)
         for (k in 0..(lines - 1)) {
-            val sck : Float = sc2.divideScale(k, lines)
             save()
-            rotate(-90f * sck)
+            rotate(-90f * sck * k)
             drawLine(0f, 0f, 2 * size, 0f, paint)
             restore()
         }
