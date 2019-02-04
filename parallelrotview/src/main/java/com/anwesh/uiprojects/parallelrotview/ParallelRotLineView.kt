@@ -212,4 +212,13 @@ class ParallelRotLineView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : ParallelRotLineView {
+            val view : ParallelRotLineView = ParallelRotLineView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
