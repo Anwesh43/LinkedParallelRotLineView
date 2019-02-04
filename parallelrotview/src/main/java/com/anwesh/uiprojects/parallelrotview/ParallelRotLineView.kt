@@ -189,4 +189,26 @@ class ParallelRotLineView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : ParallelRotLineView) {
+
+        private val animator : Animator = Animator(view)
+        private val prl : ParallelRotLine = ParallelRotLine(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            prl.draw(canvas, paint)
+            animator.animate {
+                prl.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            prl.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
