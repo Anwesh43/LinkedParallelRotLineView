@@ -46,7 +46,7 @@ fun Canvas.drawPRLNode(i : Int, scale : Float, paint : Paint) {
         rotate(180f * j)
         translate(-size, size * scj)
         for (k in 0..(lines - 1)) {
-            val sck : Float = sc2.divideScale(k, 2)
+            val sck : Float = sc2.divideScale(k, lines)
             save()
             rotate(-90f * sck)
             drawLine(0f, 0f, 2 * size, 0f, paint)
@@ -72,5 +72,25 @@ class ParallelRotLineView(ctx : Context) : View(ctx) {
             }
         }
         return true
+    }
+
+    data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
+
+        fun update(cb : (Float) -> Unit) {
+            scale += scale.updateValue(dir, lines, lines)
+            if (Math.abs(scale - prevScale) > 1) {
+                scale = prevScale + dir
+                dir = 0f
+                prevScale = scale
+                cb(prevScale)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            if (dir == 0f) {
+                dir = 1f - 2 * prevScale
+                cb()
+            }
+        }
     }
 }
